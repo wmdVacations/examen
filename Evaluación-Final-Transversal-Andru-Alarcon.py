@@ -1,11 +1,10 @@
 import random
-import math
 import csv
-import os
+from statistics import geometric_mean
 
-# Definición de las funciones
+####gracias profe alex
 
-# Función principal que contiene el menú y gestiona la interacción con el usuario
+# Menu
 def main():
     empleados = ["Juan Pérez", "María García", "Pedro Soto", "Isabel Gómez", "Miguel Sánchez", "Ana López", "Luis Fernández", "Carmen Ruiz", "Raúl González", "Laura Martínez"]
     sueldos = []
@@ -55,12 +54,12 @@ def main():
         else:
             print("La opción ingresada debe ser entre 1 y 5 solamente!!!!")
 
-# Genera los sueldos aleatorios
+# esto genera los sueldos al azar
 def gen_sueldos():
     sueldos = [random.randint(400000, 3000000) for _ in range(10)]
     return sueldos
 
-# Clasifica los sueldos en tres categorías
+# esto clasifica los sueldos
 def clasificar_sueldos(sueldos, empleados):
     clasificacion = {
         'menores_800': [],
@@ -78,7 +77,7 @@ def clasificar_sueldos(sueldos, empleados):
     
     return clasificacion
 
-# Muestra la clasificación de sueldos
+# esto muestra la clasificacion de los sueldos
 def mostrar_clasificacion(clasificacion):
     print("Sueldos menores a $800.000")
     print(f"TOTAL: {len(clasificacion['menores_800'])}")
@@ -95,22 +94,18 @@ def mostrar_clasificacion(clasificacion):
     for empleado, sueldo in clasificacion['mayores_2000']:
         print(f"{empleado}: ${sueldo}")
 
-    total_sueldos = sum([sueldo for clasif in clasificacion.values() for _, sueldo in clasif])
+    total_sueldos = sum(sueldo for clasif in clasificacion.values() for _, sueldo in clasif)
     print(f"\nTOTAL SUELDOS: ${total_sueldos}")
 
-# Muestra las estadísticas de los sueldos
+# esto muestra las estadisticas
 def ver_estadisticas(sueldos):
-    sueldo_mas_alto = max(sueldos)
-    sueldo_mas_bajo = min(sueldos)
     promedio_sueldos = sum(sueldos) / len(sueldos)
-    media_geometrica = math.exp(sum(math.log(sueldo) for sueldo in sueldos) / len(sueldos))
+    media_geometrica = geometric_mean(sueldos)
 
-    print(f"Sueldo más alto: ${sueldo_mas_alto}")
-    print(f"Sueldo más bajo: ${sueldo_mas_bajo}")
     print(f"Promedio de sueldos: ${promedio_sueldos}")
     print(f"Media geométrica: ${media_geometrica:.2f}")
 
-# Calcula los descuentos y el sueldo líquido
+# esto calcula los sueldos y el sueldo loquido
 def calcular_sueldo_liquido(sueldos, empleados):
     detalles = []
     for sueldo, empleado in zip(sueldos, empleados):
@@ -121,7 +116,7 @@ def calcular_sueldo_liquido(sueldos, empleados):
     
     return detalles
 
-# Exporta los datos a un archivo CSV
+# exto exporta los sueldos a csv
 def exportar_a_csv(detalles):
     with open('sueldos.csv', mode='w', newline='') as file:
         writer = csv.writer(file)
